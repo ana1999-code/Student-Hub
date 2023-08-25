@@ -1,0 +1,39 @@
+services:
+  postgres:
+    container_name: student-hub-database
+    image: postgres
+    environment:
+      POSTGRES_USER: student_admin
+      POSTGRES_PASSWORD: student
+      PGDATA: /data/postgres
+      POSTGRES_DB: students
+    volumes:
+      - student_hub_postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - postgres
+    restart: unless-stopped
+
+  pgadmin:
+    container_name: student-hub-pgadmin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - student_hub_pgadmin:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    networks:
+      - postgres
+    restart: unless-stopped
+
+networks:
+  postgres:
+    driver: bridge
+
+volumes:
+  student_hub_postgres:
+  student_hub_pgadmin:
