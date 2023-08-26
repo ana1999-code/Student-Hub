@@ -3,10 +3,11 @@ import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import { useState, useEffect } from 'react';
 import { getAllStudents } from './Client';
 import { LoadingOutlined } from '@ant-design/icons';
-import { Table, Avatar, Spin, Modal } from 'antd';
+import { Table, Avatar, Spin, Modal, Empty } from 'antd';
 import Container from './Container';
 import Footer from './Footer';
 import AddStudentForm from './forms/AddStudentForm';
+import { errorNotification } from './Notification';
 
 const getIndicatorIcon = () => <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
@@ -27,7 +28,13 @@ function App() {
       console.log(students);
       setStudents(students);
       setFetching(false);
-    }));
+    }))
+    .catch(error => {
+      console.log(error);
+      const message = error.error.message;
+      errorNotification(message);
+      setFetching(false);
+    });
   }
 
   const openAddStudentModal = () => {
@@ -37,6 +44,26 @@ function App() {
   const closeAddStudentModal = () => {
     setAddStudentModalVisible(false);
   };
+
+  const commonElements = () => (
+    <div>
+      <Modal 
+            title="Add New Student" 
+            open={isAddStudentModalVisisble} 
+            onOk={closeAddStudentModal} 
+            onCancel={closeAddStudentModal}
+            style={{width: '50%'}}> 
+            <AddStudentForm 
+              onSuccess={()=> {
+                closeAddStudentModal();
+                fetchAllStudents();
+                }}/>
+          </Modal>
+        <Footer 
+          numberOfStudents={students.length} 
+          handleAddStudentClickEvent={openAddStudentModal}/>
+    </div>
+  )
 
   const columns = [
     {
@@ -86,28 +113,19 @@ function App() {
           columns={columns}
           rowKey='studentId'
           pagination={{pageSize: 5}}/>
-          <Modal 
-            title="Add New Student" 
-            open={isAddStudentModalVisisble} 
-            onOk={closeAddStudentModal} 
-            onCancel={closeAddStudentModal}
-            style={{width: '50%'}}> 
-            <AddStudentForm 
-              onSuccess={()=> {
-                closeAddStudentModal();
-                fetchAllStudents();
-                }}/>
-          </Modal>
-        <Footer 
-          numberOfStudents={students.length} 
-          handleAddStudentClickEvent={openAddStudentModal}/>
+        {commonElements()}
       </Container>
     )
   }
-    
+   
   
   return (
-    <div>No Students Found!</div>
+    <Container>
+      <Empty description={
+        <h1>No Students Found!</h1>
+      }/>
+      {commonElements()}
+    </Container>
   );
 }
 
