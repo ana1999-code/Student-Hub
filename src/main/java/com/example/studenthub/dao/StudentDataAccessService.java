@@ -61,4 +61,16 @@ public class StudentDataAccessService {
                 student.getGender().name().toUpperCase()
         );
     }
+
+    public boolean isEmailTaken(String email) {
+        final String sql = "SELECT EXISTS( " +
+                "SELECT 1 " +
+                "FROM student " +
+                "WHERE email = ?" +
+                ")";
+        return jdbcTemplate.queryForObject(
+                sql,
+                new Object[]{email},
+                (rs, index) -> rs.getBoolean(1));
+    }
 }

@@ -7,7 +7,7 @@ import { Table, Avatar, Spin, Modal, Empty } from 'antd';
 import Container from './Container';
 import Footer from './Footer';
 import AddStudentForm from './forms/AddStudentForm';
-import { errorNotification } from './Notification';
+import { errorNotification, successNotification } from './Notification';
 
 const getIndicatorIcon = () => <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
@@ -31,8 +31,7 @@ function App() {
     }))
     .catch(error => {
       console.log(error);
-      const message = error.error.message;
-      errorNotification(message);
+      errorNotification(error.error.message);
       setFetching(false);
     });
   }
@@ -57,7 +56,11 @@ function App() {
               onSuccess={()=> {
                 closeAddStudentModal();
                 fetchAllStudents();
-                }}/>
+                successNotification("Student added successfully!");
+                }}
+              onFailure={(error) => {
+                errorNotification(error.error.message);
+              }}/>
           </Modal>
         <Footer 
           numberOfStudents={students.length} 
