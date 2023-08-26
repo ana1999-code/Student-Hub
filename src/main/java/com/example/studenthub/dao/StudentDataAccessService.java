@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,7 +17,7 @@ public class StudentDataAccessService {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public List<Student> getAllStudents(){
+    public List<Student> getAllStudents() {
         final String sql = "SELECT * FROM student";
 
         List<Student> students = jdbcTemplate.query(sql, mapStudentFromDb());
@@ -40,5 +41,24 @@ public class StudentDataAccessService {
                     .gender(gender)
                     .build();
         };
+    }
+
+    public int addStudent(Student student) {
+        final String sql = "INSERT INTO student(" +
+                "student_id, " +
+                "first_name, " +
+                "last_name, " +
+                "email, " +
+                "gender)" +
+                "VALUES (?, ?, ?, ?, ?)";
+
+        return jdbcTemplate.update(
+                sql,
+                student.getStudentId(),
+                student.getFirstName(),
+                student.getLastName(),
+                student.getEmail(),
+                student.getGender().name().toUpperCase()
+        );
     }
 }

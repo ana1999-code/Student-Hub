@@ -24,6 +24,7 @@ function App() {
     getAllStudents()
     .then(res => res.json()
     .then(students => {
+      console.log(students);
       setStudents(students);
       setFetching(false);
     }));
@@ -91,7 +92,11 @@ function App() {
             onOk={closeAddStudentModal} 
             onCancel={closeAddStudentModal}
             style={{width: '50%'}}> 
-            <AddStudentForm/>
+            <AddStudentForm 
+              onSuccess={()=> {
+                closeAddStudentModal();
+                fetchAllStudents();
+                }}/>
           </Modal>
         <Footer 
           numberOfStudents={students.length} 

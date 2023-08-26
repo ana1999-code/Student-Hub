@@ -1,9 +1,10 @@
 import { Formik } from "formik";
 import { Input, Button, Radio } from "antd";
+import { addNewStudent } from "../Client";
 
 const inputTopMargin = {marginTop: '30px'};
 
-const AddStudentForm = () => (
+const AddStudentForm = (props) => (
      <Formik
        initialValues={{ firstName: '', lastName: '', email: '', gender: '' }}
        validate={values => {
@@ -31,11 +32,11 @@ const AddStudentForm = () => (
 
          return errors;
        }}
-       onSubmit={(values, { setSubmitting }) => {
-         setTimeout(() => {
-           alert(JSON.stringify(values, null, 2));
-           setSubmitting(false);
-         }, 400);
+       onSubmit={(student, { setSubmitting }) => {
+           addNewStudent(student).then(() => {
+            props.onSuccess();
+            setSubmitting(false);
+       })
        }}
      >
        {({
@@ -47,7 +48,8 @@ const AddStudentForm = () => (
          handleSubmit,
          isSubmitting,
          submitForm,
-         isValid
+         isValid,
+         setFieldValue
        }) => (
          <form onSubmit={handleSubmit}>
             <Input
@@ -85,12 +87,16 @@ const AddStudentForm = () => (
             <Radio.Group >
                 <Radio 
                         name="gender"
-                        value="MALE">MALE</Radio>
+                        value="MALE"
+                        onChange={() => setFieldValue("gender", "MALE")}
+                        >MALE</Radio>
                 <Radio
                         name="gender"
-                        value="FEMALE">FEMALE</Radio>
+                        value="FEMALE"
+                        onChange={() => setFieldValue("gender", "FEMALE")}
+                        >FEMALE</Radio>
             </Radio.Group>
-            {errors.email && touched.email && 
+            {errors.gender && touched.gender && 
                 <div className="text-danger">{errors.gender}</div>}
             </div>
            <Button 
