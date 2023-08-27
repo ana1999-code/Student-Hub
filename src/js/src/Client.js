@@ -23,3 +23,5 @@ export const addNewStudent = student =>
         method: 'POST',
         body: JSON.stringify(student)
     }).then(checkStatus);
+
+export const getStudentCourses = (studentId) => fetch('/students/'.concat(studentId).concat('/courses')).then(checkStatus);

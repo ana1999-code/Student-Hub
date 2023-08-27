@@ -1,9 +1,9 @@
 import './App.css';
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import { useState, useEffect } from 'react';
-import { getAllStudents } from './Client';
+import { getAllStudents, getStudentCourses } from './Client';
 import { LoadingOutlined } from '@ant-design/icons';
-import { Table, Avatar, Spin, Modal, Empty } from 'antd';
+import { Table, Avatar, Spin, Modal, Empty, Button } from 'antd';
 import Container from './Container';
 import Footer from './Footer';
 import AddStudentForm from './forms/AddStudentForm';
@@ -16,6 +16,8 @@ function App() {
   const [students, setStudents] = useState([]);
   const [isFetching, setFetching] = useState(true);
   const [isAddStudentModalVisisble, setAddStudentModalVisible] = useState(false);
+  const [isCoursesModalVisible, setCoursesModalVisible] = useState(false);
+  const [courses, setCourses] = useState([]);
 
   useEffect(() => {
     fetchAllStudents();
@@ -36,12 +38,31 @@ function App() {
     });
   }
 
+  const fetchAllCoursesForStudent = (studentId) => {
+      getStudentCourses(studentId)
+      .then(res => res.json()
+      .then(courses => {
+        setCourses(courses);
+      }))
+      .catch(error => {
+        errorNotification(error.error.message);
+      });
+  }
+
   const openAddStudentModal = () => {
     setAddStudentModalVisible(true);
   };
   
   const closeAddStudentModal = () => {
     setAddStudentModalVisible(false);
+  };
+
+  const openCoursesModal = () => {
+    setCoursesModalVisible(true);
+  };
+  
+  const closeCoursesModal = () => {
+    setCoursesModalVisible(false);
   };
 
   const commonElements = () => (
@@ -51,7 +72,7 @@ function App() {
             open={isAddStudentModalVisisble} 
             onOk={closeAddStudentModal} 
             onCancel={closeAddStudentModal}
-            style={{width: '50%'}}> 
+            > 
             <AddStudentForm 
               onSuccess={()=> {
                 closeAddStudentModal();
@@ -67,6 +88,44 @@ function App() {
           handleAddStudentClickEvent={openAddStudentModal}/>
     </div>
   )
+
+  const courseColumns = [
+    {
+      title: 'Course',
+      key: 'name',
+      dataIndex: 'name'
+    },
+    {
+      title: 'Descritpion',
+      key: 'description',
+      dataIndex: 'description'
+    },
+    {
+      title: 'Department',
+      key: 'department',
+      dataIndex: 'department'
+    },
+    {
+      title: 'Teacher',
+      key: 'teacherName',
+      dataIndex: 'teacherName'
+    },
+    {
+      title: 'Start Date',
+      key: 'startDate',
+      dataIndex: 'startDate'
+    },
+    {
+      title: 'End Date',
+      key: 'endDate',
+      dataIndex: 'endDate'
+    },
+    {
+      title: 'Grade',
+      key: 'grade',
+      dataIndex: 'grade'
+    }
+  ]
 
   const columns = [
     {
@@ -97,6 +156,29 @@ function App() {
       title: 'Gender',
       dataIndex: 'gender',
       key: 'gender'
+    },
+    {
+      title: '',
+      key: 'courses',
+      render: (course) => (
+        <div><Modal 
+            title="Courses" 
+            open={isCoursesModalVisible} 
+            onOk={closeCoursesModal} 
+            onCancel={closeCoursesModal}
+            width={1000}> 
+            <Table
+              dataSource={courses}  
+              columns={courseColumns}
+              rowKey='courseId'
+            />
+          </Modal>
+        <Button onClick={() =>{
+            fetchAllCoursesForStudent(course.studentId);
+            openCoursesModal();
+          }}>Courses</Button>
+        </div>
+      )
     }
   ]
 

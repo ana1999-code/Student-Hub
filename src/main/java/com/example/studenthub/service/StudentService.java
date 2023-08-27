@@ -2,6 +2,7 @@ package com.example.studenthub.service;
 
 import com.example.studenthub.dao.StudentDataAccessService;
 import com.example.studenthub.exception.ApiRequestException;
+import com.example.studenthub.model.student.StudentCourse;
 import com.example.studenthub.model.student.Student;
 import com.example.studenthub.model.student.StudentDto;
 import com.example.studenthub.validation.EmailValidator;
@@ -9,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -48,5 +48,9 @@ public class StudentService {
         if (studentDataAccessService.isEmailTaken(email)){
             throw new ApiRequestException("Email %s is already taken".formatted(email));
         }
+    }
+
+    public List<StudentCourse> getAllCoursesForStudent(UUID studentId) {
+        return studentDataAccessService.getAllCoursesForStudent(studentId);
     }
 }
