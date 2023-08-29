@@ -1,6 +1,5 @@
 package com.example.studenthub.utils;
 
-import com.example.studenthub.model.student.Gender;
 import com.example.studenthub.model.student.Student;
 import com.example.studenthub.model.student.StudentCourse;
 import com.example.studenthub.model.student.StudentDto;
@@ -28,6 +27,8 @@ public class TestUtils {
     public static final Student JOHN = new Student(JOHN_ID, JOHN_FIRST_NAME, JOHN_LAST_NAME, JOHN_EMAIL, MALE);
 
     public static final Student MARIA = new Student(UUID.randomUUID(), "Maria", "Forest", "mariaf1@mail.com", FEMALE);
+
+    public static final Student ALEX = new Student(UUID.randomUUID(), "Alex", "Bush", "alexb2@mail.com", MALE);
 
     public static final List<Student> STUDENT_LIST = List.of(JOHN, MARIA);
 

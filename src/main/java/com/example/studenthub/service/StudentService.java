@@ -1,5 +1,6 @@
 package com.example.studenthub.service;
 
+import com.example.studenthub.dao.StudentDao;
 import com.example.studenthub.dao.StudentDataAccessService;
 import com.example.studenthub.exception.ApiRequestException;
 import com.example.studenthub.model.student.StudentCourse;
@@ -16,12 +17,12 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class StudentService {
 
-    private final StudentDataAccessService studentDataAccessService;
+    private final StudentDao studentDao;
 
     private final EmailValidator emailValidator;
 
     public List<Student> getAllStudents() {
-        return studentDataAccessService.getAllStudents();
+        return studentDao.getAllStudents();
     }
 
     public void addStudent(StudentDto studentDto) {
@@ -37,7 +38,7 @@ public class StudentService {
                 .gender(studentDto.getGender())
                 .build();
 
-        studentDataAccessService.addStudent(student);
+        studentDao.addStudent(student);
     }
 
     private void validateEmail(String email) {
@@ -45,16 +46,16 @@ public class StudentService {
             throw new ApiRequestException("Email %s is not valid".formatted(email));
         }
 
-        if (studentDataAccessService.isEmailTaken(email)){
+        if (studentDao.isEmailTaken(email)){
             throw new ApiRequestException("Email %s is already taken".formatted(email));
         }
     }
 
     public List<StudentCourse> getAllCoursesForStudent(UUID studentId) {
-        return studentDataAccessService.getAllCoursesForStudent(studentId);
+        return studentDao.getAllCoursesForStudent(studentId);
     }
 
     public void deleteStudent(UUID studentId) {
-        studentDataAccessService.deleteStudent(studentId);
+        studentDao.deleteStudent(studentId);
     }
 }

@@ -15,16 +15,14 @@ import java.util.UUID;
 
 @Repository
 @RequiredArgsConstructor
-public class StudentDataAccessService {
+public class StudentDataAccessService implements StudentDao{
 
     private final JdbcTemplate jdbcTemplate;
 
     public List<Student> getAllStudents() {
         final String sql = "SELECT * FROM student";
 
-        List<Student> students = jdbcTemplate.query(sql, mapStudentFromDb());
-
-        return students;
+        return jdbcTemplate.query(sql, mapStudentFromDb());
     }
 
     private static RowMapper<Student> mapStudentFromDb() {
@@ -77,14 +75,13 @@ public class StudentDataAccessService {
     }
 
     public List<StudentCourse> getAllCoursesForStudent(UUID studentId) {
-        final String sql = "SELECT sc.student_id, sc.course_id, c.name, c.description, c.department, c.teacher_name, sc.start_date, sc.end_date, sc.grade " +
+        final String sql = "SELECT sc.student_id, c.course_id, c.name, c.description, c.department, c.teacher_name, sc.start_date, sc.end_date, sc.grade " +
                 "FROM student s " +
                 "INNER JOIN student_course sc USING(student_id) " +
-                "INNER JOIN course c USING(course_id) " +
+                "INNER JOIN course c ON c.course_id=sc.course_id " +
                 "WHERE s.student_id = ?";
 
-        List<StudentCourse> studentCourses = jdbcTemplate.query(sql, new Object[]{studentId}, mapCourseInfoFromDb());
-        return studentCourses;
+        return jdbcTemplate.query(sql, new Object[]{studentId}, mapCourseInfoFromDb());
     }
 
     private RowMapper<StudentCourse> mapCourseInfoFromDb() {
