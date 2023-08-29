@@ -7,6 +7,7 @@ import com.example.studenthub.service.StudentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,6 +35,11 @@ public class StudentController {
     @PostMapping
     public void addStudent(@RequestBody @Valid StudentDto studentDto) {
         studentService.addStudent(studentDto);
+    }
+
+    @DeleteMapping("{studentId}")
+    public void deleteStudent(@PathVariable("studentId") UUID studentId){
+        studentService.deleteStudent(studentId);
     }
 
     @GetMapping("{studentId}/courses")

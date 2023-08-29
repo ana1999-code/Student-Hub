@@ -114,4 +114,11 @@ public class StudentDataAccessService {
                     .build();
         };
     }
+
+    public void deleteStudent(UUID studentId) {
+        final String sql = "DELETE FROM student" +
+                " WHERE student_id = ?";
+
+        jdbcTemplate.update(sql, studentId);
+    }
 }

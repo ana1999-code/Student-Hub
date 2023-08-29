@@ -53,4 +53,8 @@ public class StudentService {
     public List<StudentCourse> getAllCoursesForStudent(UUID studentId) {
         return studentDataAccessService.getAllCoursesForStudent(studentId);
     }
+
+    public void deleteStudent(UUID studentId) {
+        studentDataAccessService.deleteStudent(studentId);
+    }
 }

@@ -1,7 +1,7 @@
 import './App.css';
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import { useState, useEffect } from 'react';
-import { getAllStudents, getStudentCourses } from './Client';
+import { getAllStudents, getStudentCourses, deleteStudent } from './Client';
 import { LoadingOutlined } from '@ant-design/icons';
 import { Table, Avatar, Spin, Modal, Empty, Button } from 'antd';
 import Container from './Container';
@@ -35,6 +35,14 @@ function App() {
       console.log(error);
       errorNotification(error.error.message);
       setFetching(false);
+    });
+  }
+
+  const deleteStudentById = (studentId) => {
+    deleteStudent(studentId)
+    .then(() => fetchAllStudents())
+    .catch(error => {
+      errorNotification(error.error.message);
     });
   }
 
@@ -178,6 +186,13 @@ function App() {
             openCoursesModal();
           }}>Courses</Button>
         </div>
+      )
+    },
+    {
+      title: '',
+      key: 'deleteStudent',
+      render: (student) => (
+        <Button type='primary' danger onClick={() => deleteStudentById(student.studentId)}>Delete</Button>
       )
     }
   ]

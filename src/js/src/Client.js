@@ -24,4 +24,8 @@ export const addNewStudent = student =>
         body: JSON.stringify(student)
     }).then(checkStatus);
 
-export const getStudentCourses = (studentId) => fetch('/students/'.concat(studentId).concat('/courses')).then(checkStatus);
+export const deleteStudent = (studentId) => fetch(`/students/${studentId}`, {
+    method: 'DELETE'
+}).then(checkStatus);
+
+export const getStudentCourses = (studentId) => fetch(`/students/${studentId}/courses`).then(checkStatus);
