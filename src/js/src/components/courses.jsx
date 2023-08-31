@@ -1,16 +1,18 @@
 import { useState, useEffect } from 'react';
 import { getAllCourses } from './Client.js';
 import { LoadingOutlined } from '@ant-design/icons';
-import { Table, Spin, Empty } from 'antd';
+import { Table, Spin, Empty, Modal } from 'antd';
 import Container from './Container.js';
 import Footer from './Footer.js';
-import { errorNotification } from './Notification.js';
+import { errorNotification, successNotification } from './Notification.js';
+import AddCourseForm from './forms/AddCourseForm';
 
 const getIndicatorIcon = () => <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
 function Courses() {
   const [courses, setCourses] = useState([]);
   const [isFetching, setFetching] = useState(true);
+  const [isAddCourseModalVisisble, setAddCourseModalVisible] = useState(false);
 
   useEffect(() => {
     fetchAllCourses();
@@ -31,10 +33,35 @@ function Courses() {
     });
   }
 
+  const openAddCourseModal = () => {
+    setAddCourseModalVisible(true);
+  };
+  
+  const closeAddCourseModal = () => {
+    setAddCourseModalVisible(false);
+  };
+
   const commonElements = () => (
     <div>
+      <Modal 
+            title="Add New Course" 
+            open={isAddCourseModalVisisble} 
+            onOk={closeAddCourseModal} 
+            onCancel={closeAddCourseModal}
+            > 
+            <AddCourseForm 
+              onSuccess={()=> {
+                closeAddCourseModal();
+                fetchAllCourses();
+                successNotification("Course added successfully!");
+                }}
+              onFailure={(error) => {
+                errorNotification(error.error.message);
+              }}/>
+          </Modal>
         <Footer 
           numberOfElements={courses.length} 
+          handleClickEvent={openAddCourseModal}
           addElementButtonName="Add New Course" 
          />
     </div>

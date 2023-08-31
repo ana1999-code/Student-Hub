@@ -31,3 +31,12 @@ export const deleteStudent = (studentId) => fetch(`/api/v1/students/${studentId}
 export const getStudentCourses = (studentId) => fetch(`/api/v1/students/${studentId}/courses`).then(checkStatus);
 
 export const getAllCourses = () => fetch('/api/v1/courses').then(checkStatus);
+
+export const addNewCourse = course => 
+    fetch('/api/v1/courses', {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        method: 'POST',
+        body: JSON.stringify(course)
+    }).then(checkStatus);
