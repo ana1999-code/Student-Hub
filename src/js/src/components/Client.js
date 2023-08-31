@@ -29,3 +29,5 @@ export const deleteStudent = (studentId) => fetch(`/api/v1/students/${studentId}
 }).then(checkStatus);
 
 export const getStudentCourses = (studentId) => fetch(`/api/v1/students/${studentId}/courses`).then(checkStatus);
+
+export const getAllCourses = () => fetch('/api/v1/courses').then(checkStatus);

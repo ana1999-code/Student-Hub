@@ -4,12 +4,12 @@ import Container from "./Container";
 const Footer = (props) => (
     <div className="footer">
         <Container>
-            {props.numberOfStudents !== undefined ? 
+            {props.numberOfElements !== undefined ? 
                 <Avatar style={{backgroundColor: '#f56a00', marginRight:'5px'}} 
                 size="large">
-                    {props.numberOfStudents}
+                    {props.numberOfElements}
                     </Avatar>:null}
-            <Button onClick={() => props.handleAddStudentClickEvent()} type="primary">Add new student</Button>
+            <Button onClick={() => props.handleClickEvent()} type="primary">{props.addElementButtonName}</Button>
         </Container>
     </div>
 );

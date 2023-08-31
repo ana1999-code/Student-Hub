@@ -89,8 +89,9 @@ function Students() {
               }}/>
           </Modal>
         <Footer 
-          numberOfStudents={students.length} 
-          handleAddStudentClickEvent={openAddStudentModal}/>
+          numberOfElements={students.length} 
+          handleClickEvent={openAddStudentModal}
+          addElementButtonName="Add New Student"/>
     </div>
   )
 
