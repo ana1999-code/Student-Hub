@@ -15,7 +15,6 @@ import java.util.Objects;
 import static com.example.studenthub.utils.ObjectToJsonMapper.objectToJson;
 import static com.example.studenthub.utils.TestUtils.COURSES;
 import static com.example.studenthub.utils.TestUtils.EMAIL_IS_TAKEN_ERROR;
-import static com.example.studenthub.utils.TestUtils.INVALID_EMAIL;
 import static com.example.studenthub.utils.TestUtils.INVALID_EMAIL_ERROR;
 import static com.example.studenthub.utils.TestUtils.INVALID_REQUEST_CONTENT;
 import static com.example.studenthub.utils.TestUtils.JOHN;
@@ -41,6 +40,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(StudentController.class)
 class StudentControllerTest {
 
+    public static final String STUDENTS_URI = "/api/v1/students";
+
     @MockBean
     private StudentService studentService;
 
@@ -51,7 +52,7 @@ class StudentControllerTest {
     void itShouldReturnStudents_WhenGetAllStudents() throws Exception {
         when(studentService.getAllStudents()).thenReturn(STUDENT_LIST);
 
-        MvcResult mvcResult = mockMvc.perform(get("/students"))
+        MvcResult mvcResult = mockMvc.perform(get(STUDENTS_URI))
                 .andExpect(status().isOk())
                 .andExpect(content().json(Objects.requireNonNull(objectToJson(STUDENT_LIST))))
                 .andReturn();
@@ -65,7 +66,7 @@ class StudentControllerTest {
 
     @Test
     void itShouldAddNewStudent() throws Exception {
-        mockMvc.perform(post("/students")
+        mockMvc.perform(post(STUDENTS_URI)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(Objects.requireNonNull(objectToJson(JOHN_DTO))))
                 .andExpect(status().isOk());
@@ -77,7 +78,7 @@ class StudentControllerTest {
     void itShouldThrow_WhenAddNewStudentWithInvalidEmail() throws Exception {
         doThrow(new ApiRequestException(INVALID_EMAIL_ERROR)).when(studentService).addStudent(JOHN_WITH_INVALID_EMAIL);
 
-        MvcResult mvcResult = mockMvc.perform(post("/students")
+        MvcResult mvcResult = mockMvc.perform(post(STUDENTS_URI)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(Objects.requireNonNull(objectToJson(JOHN_WITH_INVALID_EMAIL))))
                 .andExpect(status().isBadRequest())
@@ -94,7 +95,7 @@ class StudentControllerTest {
         doThrow(new ApiRequestException(EMAIL_IS_TAKEN_ERROR))
                 .when(studentService).addStudent(JOHN_DTO);
 
-        MvcResult mvcResult = mockMvc.perform(post("/students")
+        MvcResult mvcResult = mockMvc.perform(post(STUDENTS_URI)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(Objects.requireNonNull(objectToJson(JOHN))))
                 .andExpect(status().isBadRequest())
@@ -108,7 +109,7 @@ class StudentControllerTest {
 
     @Test
     void itShouldThrow_WhenAddNewStudentWithNullGender() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(post("/students")
+        MvcResult mvcResult = mockMvc.perform(post(STUDENTS_URI)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(Objects.requireNonNull(objectToJson(JOHN_WITH_NULL_GENDER))))
                 .andExpect(status().isBadRequest())
@@ -123,7 +124,7 @@ class StudentControllerTest {
 
     @Test
     void itShouldThrow_WhenAddNewStudentWithBlankFirstName() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(post("/students")
+        MvcResult mvcResult = mockMvc.perform(post(STUDENTS_URI)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(Objects.requireNonNull(objectToJson(JOHN_WITH_NULL_FIRST_NAME))))
                 .andExpect(status().isBadRequest())
@@ -137,7 +138,7 @@ class StudentControllerTest {
 
     @Test
     void itShouldThrow_WhenAddNewStudentWithBlankLastName() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(post("/students")
+        MvcResult mvcResult = mockMvc.perform(post(STUDENTS_URI)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(Objects.requireNonNull(objectToJson(JOHN_WITH_NULL_LAST_NAME))))
                 .andExpect(status().isBadRequest())
@@ -152,7 +153,7 @@ class StudentControllerTest {
 
     @Test
     void itShouldThrow_WhenAddNewStudentWithBlankEmail() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(post("/students")
+        MvcResult mvcResult = mockMvc.perform(post(STUDENTS_URI)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(Objects.requireNonNull(objectToJson(JOHN_WITH_NULL_EMAIL))))
                 .andExpect(status().isBadRequest())
@@ -169,7 +170,7 @@ class StudentControllerTest {
         when(studentService.getAllCoursesForStudent(JOHN_ID)).thenReturn(COURSES);
 
 
-        MvcResult mvcResult = mockMvc.perform(get("/students/{studentId}/courses", JOHN_ID))
+        MvcResult mvcResult = mockMvc.perform(get(STUDENTS_URI + "/{studentId}/courses", JOHN_ID))
                 .andExpect(status().isOk())
                 .andExpect(content().json(Objects.requireNonNull(objectToJson(COURSES))))
                 .andReturn();
@@ -183,7 +184,7 @@ class StudentControllerTest {
 
     @Test
     void itShouldDeleteStudent() throws Exception {
-        mockMvc.perform(delete("/students/{studentId}", JOHN_ID))
+        mockMvc.perform(delete(STUDENTS_URI + "/{studentId}", JOHN_ID))
                 .andExpect(status().isOk())
                 .andReturn();
 
