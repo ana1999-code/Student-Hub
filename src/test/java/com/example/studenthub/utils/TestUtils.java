@@ -1,5 +1,6 @@
 package com.example.studenthub.utils;
 
+import com.example.studenthub.model.course.Course;
 import com.example.studenthub.model.student.Student;
 import com.example.studenthub.model.student.StudentCourse;
 import com.example.studenthub.model.student.StudentDto;
@@ -55,4 +56,10 @@ public class TestUtils {
     public static final String EMAIL_IS_TAKEN_ERROR = "Email %s is already taken".formatted(JOHN_DTO.getEmail());
 
     public static final String INVALID_REQUEST_CONTENT = "Invalid request content.";
+
+    public static final UUID JAVA_COURSE_ID = UUID.randomUUID();
+
+    public static final String JAVA = "JAVA";
+
+    public static final Course JAVA_COURSE = new Course(JAVA_COURSE_ID, JAVA, "JAVA", "IT", null);
 }
