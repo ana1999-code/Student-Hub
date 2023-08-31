@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.util.List;
+import java.util.UUID;
 
 import static com.example.studenthub.utils.TestUtils.HTML_COURSE;
 import static com.example.studenthub.utils.TestUtils.JAVA_COURSE;
@@ -52,5 +53,15 @@ class CourseDataAccessServiceTest {
         assertThatThrownBy(() -> courseDataAccessService.addCourse(JAVA_COURSE))
                 .hasMessageContaining(UNIQUE_INDEX_OR_PRIMARY_KEY_VIOLATION)
                 .isInstanceOf(DuplicateKeyException.class);
+    }
+
+    @Test
+    void itShouldDeleteCourse() {
+        String courseId = "83c27df7-eda4-43ae-9b2c-69dc22553600";
+        courseDataAccessService.deleteCourse(UUID.fromString(courseId));
+
+        final List<Course> actualResult = courseDataAccessService.getAllCourses();
+
+        assertThat(actualResult).hasSize(1);
     }
 }

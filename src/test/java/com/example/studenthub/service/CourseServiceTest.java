@@ -16,9 +16,12 @@ import java.util.List;
 import static com.example.studenthub.utils.TestUtils.JAVA;
 import static com.example.studenthub.utils.TestUtils.JAVA_COURSE;
 import static com.example.studenthub.utils.TestUtils.JAVA_COURSE_DTO;
+import static com.example.studenthub.utils.TestUtils.JAVA_COURSE_ID;
 import static com.example.studenthub.utils.TestUtils.NAME_IS_PRESENT_ERROR;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -64,5 +67,12 @@ class CourseServiceTest {
         assertThatThrownBy(() -> courseService.addCourse(JAVA_COURSE_DTO))
                 .isInstanceOf(ApiRequestException.class)
                 .hasMessage(NAME_IS_PRESENT_ERROR);
+    }
+
+    @Test
+    void itShouldDeleteCourse() {
+        doNothing().when(courseDao).deleteCourse(JAVA_COURSE_ID);
+
+        assertThatNoException().isThrownBy(() -> courseService.deleteCourse(JAVA_COURSE_ID));
     }
 }

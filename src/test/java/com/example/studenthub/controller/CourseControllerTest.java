@@ -17,12 +17,14 @@ import java.util.Objects;
 import static com.example.studenthub.utils.ObjectToJsonMapper.objectToJson;
 import static com.example.studenthub.utils.TestUtils.JAVA_COURSE;
 import static com.example.studenthub.utils.TestUtils.JAVA_COURSE_DTO;
+import static com.example.studenthub.utils.TestUtils.JAVA_COURSE_ID;
 import static com.example.studenthub.utils.TestUtils.NAME_IS_PRESENT_ERROR;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -78,5 +80,13 @@ class CourseControllerTest {
 
         assertThat(actualResult.contains(NAME_IS_PRESENT_ERROR)).isTrue();
         verify(courseService).addCourse(JAVA_COURSE_DTO);
+    }
+
+    @Test
+    void itShouldDeleteCourse() throws Exception {
+        mockMvc.perform(delete(COURSES_URI + "/{courseId}", JAVA_COURSE_ID))
+                .andExpect(status().isOk());
+
+        verify(courseService).deleteCourse(JAVA_COURSE_ID);
     }
 }

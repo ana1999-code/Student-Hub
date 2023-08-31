@@ -41,4 +41,8 @@ public class CourseService {
             throw new ApiRequestException("%s is already present".formatted(courseName));
         }
     }
+
+    public void deleteCourse(UUID courseId) {
+        courseDao.deleteCourse(courseId);
+    }
 }

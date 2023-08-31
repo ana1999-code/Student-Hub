@@ -48,6 +48,14 @@ public class CourseDataAccessService implements CourseDao {
         );
     }
 
+    @Override
+    public void deleteCourse(UUID courseId) {
+        final String sql = "DELETE FROM course " +
+                "WHERE course_id = ?";
+
+        jdbcTemplate.update(sql, courseId);
+    }
+
     private static RowMapper<Course> mapCourseFromDb() {
         return (rs, index) -> {
             final UUID courseId = UUID.fromString(rs.getString("course_id"));
