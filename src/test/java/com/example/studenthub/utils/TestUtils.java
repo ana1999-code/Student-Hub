@@ -1,6 +1,7 @@
 package com.example.studenthub.utils;
 
 import com.example.studenthub.model.course.Course;
+import com.example.studenthub.model.course.CourseDto;
 import com.example.studenthub.model.student.Student;
 import com.example.studenthub.model.student.StudentCourse;
 import com.example.studenthub.model.student.StudentDto;
@@ -57,9 +58,17 @@ public class TestUtils {
 
     public static final String INVALID_REQUEST_CONTENT = "Invalid request content.";
 
+    public static final String UNIQUE_INDEX_OR_PRIMARY_KEY_VIOLATION = "Unique index or primary key violation";
+
     public static final UUID JAVA_COURSE_ID = UUID.randomUUID();
 
-    public static final String JAVA = "JAVA";
+    public static final String JAVA = "Java";
 
     public static final Course JAVA_COURSE = new Course(JAVA_COURSE_ID, JAVA, "JAVA", "IT", null);
+
+    public static final Course HTML_COURSE = new Course(UUID.randomUUID(), "HTML", "HTML", "IT", null);
+
+    public static final CourseDto JAVA_COURSE_DTO = new CourseDto(JAVA, "JAVA", "IT", null);
+
+    public static final String NAME_IS_PRESENT_ERROR = "%s is already present".formatted(JAVA);
 }

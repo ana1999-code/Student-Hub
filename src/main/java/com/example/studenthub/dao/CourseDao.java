@@ -7,4 +7,8 @@ import java.util.List;
 public interface CourseDao {
 
     List<Course> getAllCourses();
+
+    int addCourse(Course course);
+
+    boolean isNameTaken(String courseName);
 }

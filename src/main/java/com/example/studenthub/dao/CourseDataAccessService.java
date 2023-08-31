@@ -22,6 +22,32 @@ public class CourseDataAccessService implements CourseDao {
         return jdbcTemplate.query(sql, mapCourseFromDb());
     }
 
+    @Override
+    public int addCourse(Course course) {
+        final String sql = "INSERT INTO course(course_id, name, description, department, teacher_name) " +
+                "VALUES(?, ?, ?, ?, ?)";
+        return jdbcTemplate.update(sql,
+                course.getCourseId(),
+                course.getName(),
+                course.getDescription(),
+                course.getDepartment(),
+                course.getTeacherName());
+    }
+
+    @Override
+    public boolean isNameTaken(String courseName) {
+        final String sql = "SELECT EXISTS(" +
+                "SELECT 1 " +
+                "FROM course " +
+                "WHERE name = ? " +
+                ")";
+        return jdbcTemplate.queryForObject(
+                sql,
+                new Object[]{courseName},
+                (rs, index) -> rs.getBoolean(1)
+        );
+    }
+
     private static RowMapper<Course> mapCourseFromDb() {
         return (rs, index) -> {
             final UUID courseId = UUID.fromString(rs.getString("course_id"));

@@ -2,9 +2,11 @@ package com.example.studenthub.model.course;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.UUID;
 
@@ -13,6 +15,8 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
+@EqualsAndHashCode(exclude = "courseId")
+@ToString
 public class Course {
 
     private UUID courseId;

@@ -16,6 +16,7 @@ import static com.example.studenthub.utils.TestUtils.ALEX;
 import static com.example.studenthub.utils.TestUtils.JOHN;
 import static com.example.studenthub.utils.TestUtils.JOHN_EMAIL;
 import static com.example.studenthub.utils.TestUtils.MARIA;
+import static com.example.studenthub.utils.TestUtils.UNIQUE_INDEX_OR_PRIMARY_KEY_VIOLATION;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -54,7 +55,7 @@ class StudentDataAccessServiceTest {
     @Test
     void itShouldThrow_WhenAddStudentWithExistingEmail() {
         assertThatThrownBy(() -> studentDataAccessService.addStudent(JOHN))
-                .hasMessageContaining("Unique index or primary key violation")
+                .hasMessageContaining(UNIQUE_INDEX_OR_PRIMARY_KEY_VIOLATION)
                 .isInstanceOf(DuplicateKeyException.class);
     }
 
