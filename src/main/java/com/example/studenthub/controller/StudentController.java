@@ -47,4 +47,10 @@ public class StudentController {
         final List<StudentCourse> courses = studentService.getAllCoursesForStudent(studentId);
         return ResponseEntity.ok(courses);
     }
+
+    @PostMapping("{studentId}/courses")
+    public void addCourseForStudent(@PathVariable("studentId") UUID studentId,
+                                    @RequestBody StudentCourse studentCourse){
+        studentService.addCourseForStudent(studentId, studentCourse);
+    }
 }

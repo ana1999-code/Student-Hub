@@ -65,7 +65,6 @@ class CourseControllerTest {
     }
 
     @Test
-    @Disabled
     void itShouldThrow_WhenAddCourseWithExistingName() throws Exception {
         doThrow(new ApiRequestException(NAME_IS_PRESENT_ERROR))
                 .when(courseService).addCourse(JAVA_COURSE_DTO);

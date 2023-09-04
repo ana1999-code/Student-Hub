@@ -58,4 +58,8 @@ public class StudentService {
     public void deleteStudent(UUID studentId) {
         studentDao.deleteStudent(studentId);
     }
+
+    public void addCourseForStudent(UUID studentId, StudentCourse studentCourse) {
+        studentDao.addCourseForStudent(studentId, studentCourse);
+    }
 }

@@ -40,3 +40,6 @@ export const addNewCourse = course =>
         method: 'POST',
         body: JSON.stringify(course)
     }).then(checkStatus);
+
+export const deleteCourse = courseId => fetch(`/api/v1/courses/${courseId}`,
+    {method: 'DELETE'}).then(checkStatus);

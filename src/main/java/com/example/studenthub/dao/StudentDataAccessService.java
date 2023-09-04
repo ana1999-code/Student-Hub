@@ -1,5 +1,6 @@
 package com.example.studenthub.dao;
 
+import com.example.studenthub.model.course.Course;
 import com.example.studenthub.model.student.StudentCourse;
 import com.example.studenthub.model.student.Gender;
 import com.example.studenthub.model.student.Student;
@@ -97,14 +98,17 @@ public class StudentDataAccessService implements StudentDao{
             final Integer grade = Optional.ofNullable(rs.getString("grade"))
                     .map(Integer::parseInt)
                     .orElse(null);
+            final Course course = Course.builder()
+                    .courseId(courseId)
+                    .name(name)
+                    .department(department)
+                    .description(description)
+                    .teacherName(teacherName)
+                    .build();
 
             return StudentCourse.builder()
                     .studentId(studentId)
-                    .courseId(courseId)
-                    .name(name)
-                    .description(description)
-                    .department(department)
-                    .teacherName(teacherName)
+                    .course(course)
                     .startDate(startDate)
                     .endDate(endDate)
                     .grade(grade)
@@ -117,5 +121,25 @@ public class StudentDataAccessService implements StudentDao{
                 " WHERE student_id = ?";
 
         jdbcTemplate.update(sql, studentId);
+    }
+
+    @Override
+    public void addCourseForStudent(UUID studentId, StudentCourse studentCourse) {
+        final String sql = "INSERT INTO student_course(" +
+                "student_id, " +
+                "course_id, " +
+                "start_date, " +
+                "end_date, " +
+                "grade) " +
+                "VALUES(?, ?, ?, ?, ?)";
+
+        jdbcTemplate.update(
+                sql,
+                studentId,
+                studentCourse.getCourse().getCourseId(),
+                studentCourse.getStartDate(),
+                studentCourse.getEndDate(),
+                studentCourse.getGrade()
+        );
     }
 }

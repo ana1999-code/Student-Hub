@@ -17,4 +17,6 @@ public interface StudentDao {
     List<StudentCourse> getAllCoursesForStudent(UUID studentId);
 
     void deleteStudent(UUID studentId);
+
+    void addCourseForStudent(UUID studentId, StudentCourse studentCourse);
 }

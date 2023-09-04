@@ -1,13 +1,12 @@
 import { useState, useEffect } from 'react';
-import { getAllCourses } from './Client.js';
+import { getAllCourses, deleteCourse } from './Client.js';
 import { LoadingOutlined } from '@ant-design/icons';
-import { Table, Spin, Empty, Modal } from 'antd';
+import { Table, Spin, Empty, Modal, Button } from 'antd';
 import Container from './Container.js';
 import Footer from './Footer.js';
 import { errorNotification, successNotification } from './Notification.js';
 import AddCourseForm from './forms/AddCourseForm';
-
-const getIndicatorIcon = () => <LoadingOutlined style={{ fontSize: 24 }} spin />;
+import { getIndicatorIcon } from './Spin.js';
 
 function Courses() {
   const [courses, setCourses] = useState([]);
@@ -40,6 +39,14 @@ function Courses() {
   const closeAddCourseModal = () => {
     setAddCourseModalVisible(false);
   };
+
+  const deleteCourseById = (courseId) => {
+    deleteCourse(courseId)
+    .then(() => fetchAllCourses())
+    .catch(error => {
+      errorNotification(error.error.message);
+    });
+  }
 
   const commonElements = () => (
     <div>
@@ -87,6 +94,13 @@ function Courses() {
       title: 'Teacher',
       dataIndex: 'teacherName',
       key: 'teacherName'
+    },
+    {
+      title: '',
+      key: 'deleteCourse',
+      render: (course) => (
+        <Button type='primary' danger onClick={() => deleteCourseById(course.courseId)}>Delete</Button>
+      )
     }
   ]
 

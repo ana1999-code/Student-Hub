@@ -35,9 +35,15 @@ public class TestUtils {
     public static final List<Student> STUDENT_LIST = List.of(JOHN, MARIA);
 
     public static final List<StudentCourse> COURSES = List.of(
-            new StudentCourse(JOHN_ID, UUID.randomUUID(), "Java", "Java", "IT", LocalDate.of(2023, Month.APRIL, 2), LocalDate.of(2024, Month.AUGUST, 2), "Maria", 8),
-            new StudentCourse(JOHN_ID, UUID.randomUUID(), "SQL", "SQL", "IT", LocalDate.of(2023, Month.APRIL, 2), LocalDate.of(2024, Month.AUGUST, 2), "Mike", 6),
-            new StudentCourse(JOHN_ID, UUID.randomUUID(), "Spring", "Spring", "IT", LocalDate.of(2023, Month.APRIL, 2), LocalDate.of(2024, Month.AUGUST, 2), "Joly", 8)
+            new StudentCourse(JOHN_ID,
+                    new Course(UUID.randomUUID(), "Java", "Java", "IT", "Maria")
+                    ,LocalDate.of(2023, Month.APRIL, 2), LocalDate.of(2024, Month.AUGUST, 2), 8),
+            new StudentCourse(JOHN_ID,
+                     new Course(UUID.randomUUID(), "SQL", "SQL", "IT", "Mike"),
+                     LocalDate.of(2023, Month.APRIL, 2), LocalDate.of(2024, Month.AUGUST, 2), 6),
+            new StudentCourse(JOHN_ID,
+                    new Course(UUID.randomUUID(), "Spring", "Spring", "IT", "Joly"),
+                    LocalDate.of(2023, Month.APRIL, 2), LocalDate.of(2024, Month.AUGUST, 2), 8)
     );
 
     public static final String INVALID_EMAIL = "jones.com";

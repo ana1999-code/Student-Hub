@@ -1,5 +1,6 @@
 package com.example.studenthub.model.student;
 
+import com.example.studenthub.model.course.Course;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,19 +19,11 @@ public class StudentCourse {
 
     private UUID studentId;
 
-    private UUID courseId;
-
-    private String name;
-
-    private String description;
-
-    private String department;
+    private Course course;
 
     private LocalDate startDate;
 
     private LocalDate endDate;
-
-    private String teacherName;
 
     private Integer grade;
 }

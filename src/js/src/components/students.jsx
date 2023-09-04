@@ -1,13 +1,12 @@
 import { useState, useEffect } from 'react';
 import { getAllStudents, getStudentCourses, deleteStudent } from './Client.js';
-import { LoadingOutlined } from '@ant-design/icons';
 import { Table, Avatar, Spin, Modal, Empty, Button } from 'antd';
 import Container from './Container';
 import Footer from './Footer.js';
 import AddStudentForm from './forms/AddStudentForm';
 import { errorNotification, successNotification } from './Notification';
+import { getIndicatorIcon } from './Spin.js';
 
-const getIndicatorIcon = () => <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
 function Students() {
   const [students, setStudents] = useState([]);
@@ -48,6 +47,7 @@ function Students() {
       .then(res => res.json()
       .then(courses => {
         setCourses(courses);
+        console.log(courses);
       }))
       .catch(error => {
         errorNotification(error.error.message);
@@ -98,23 +98,23 @@ function Students() {
   const courseColumns = [
     {
       title: 'Course',
-      key: 'name',
-      dataIndex: 'name'
+      key: 'course.name',
+      render: (course) => course.course.name
     },
     {
       title: 'Descritpion',
-      key: 'description',
-      dataIndex: 'description'
+      key: 'course.description',
+      render: (course) => course.course.description
     },
     {
       title: 'Department',
-      key: 'department',
-      dataIndex: 'department'
+      key: 'course.department',
+      render: (course) => course.course.department
     },
     {
       title: 'Teacher',
-      key: 'teacherName',
-      dataIndex: 'teacherName'
+      key: 'course.teacherName',
+      render: (course) => course.course.teacherName
     },
     {
       title: 'Start Date',
@@ -176,7 +176,8 @@ function Students() {
             <Table
               dataSource={courses}  
               columns={courseColumns}
-              rowKey='courseId'
+              rowKey="studentId"
+              pagination={courses.length > 5 ? true : false}
             />
           </Modal>
         <Button onClick={() =>{
